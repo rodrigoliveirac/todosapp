@@ -2,9 +2,11 @@ package com.rodrigoc.todosapp.data.repositories
 
 import com.rodrigoc.todosapp.data.TaskDao
 import com.rodrigoc.todosapp.data.models.Task
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+@ViewModelScoped
 class TaskRepository @Inject
 constructor(private val taskDao: TaskDao) {
 
