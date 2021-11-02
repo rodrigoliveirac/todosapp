@@ -20,7 +20,7 @@ class SharedViewModel
 
     private val _allTasks = MutableStateFlow<List<Task>>(emptyList())
     val allTasks: StateFlow<List<Task>> = _allTasks
- 
+
     fun getTasks() {
         viewModelScope.launch {
             repository.getTasks.collect { tasks ->
