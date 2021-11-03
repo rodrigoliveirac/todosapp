@@ -13,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -69,7 +68,7 @@ fun DefaultAppBar(
 ) {
     TopAppBar(
         title = {
-            Text(text = "Tasks", color = MaterialTheme.colors.topAppBarContentColor)
+            Text(text = stringResource(R.string.list_screen_title), color = MaterialTheme.colors.topAppBarContentColor)
         },
         actions = {
             ListAppBarActions(
@@ -123,7 +122,7 @@ fun SortAction(
             painter = painterResource(id = R.drawable.icon_filter),
             contentDescription = stringResource(
                 R.string.sort_action),
-            tint = MaterialTheme.colors.AppBarIcons)
+            tint = MaterialTheme.colors.appBarIcons)
     }
     DropdownMenu(
         expanded = expanded,
@@ -174,7 +173,7 @@ fun DeleteAllAction(
             painter = painterResource(id = R.drawable.icon_vertical_menu),
             contentDescription = stringResource(
                 R.string.sort_action),
-            tint = MaterialTheme.colors.AppBarIcons)
+            tint = MaterialTheme.colors.appBarIcons)
     }
     DropdownMenu(
         expanded = expanded,
@@ -222,8 +221,8 @@ fun SearchAppBar(
             placeholder = {
                 Text(
                     modifier = Modifier.alpha(ContentAlpha.medium),
-                    text = "Search",
-                    color = MaterialTheme.colors.AppBarIcons
+                    text = stringResource(R.string.placeholder_search),
+                    color = MaterialTheme.colors.appBarIcons
                 )
             },
             textStyle = TextStyle(
@@ -237,8 +236,8 @@ fun SearchAppBar(
                     onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = Icons.Filled.Search,
-                        contentDescription = "Search Icon",
-                        tint = MaterialTheme.colors.AppBarIcons
+                        contentDescription = stringResource(R.string.icon_search),
+                        tint = MaterialTheme.colors.appBarIcons
                     )
                 }
             },
@@ -265,8 +264,8 @@ fun SearchAppBar(
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Close,
-                        contentDescription = "Close Icon",
-                        tint = MaterialTheme.colors.AppBarIcons
+                        contentDescription = stringResource(R.string.close_icon),
+                        tint = MaterialTheme.colors.appBarIcons
                     )
                 }
             },
