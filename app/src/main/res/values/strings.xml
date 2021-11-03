@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">toDosApp</string>
+    <string name="add_fab">AddFab</string>
+    <string name="search_tasks">Search Tasks</string>
+    <string name="sort_action">Filter Action</string>
+    <string name="delete_all">Delete All</string>
 </resources>
