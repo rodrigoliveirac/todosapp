@@ -23,14 +23,42 @@ import com.rodrigoc.todosapp.R
 import com.rodrigoc.todosapp.components.PriorityItem
 import com.rodrigoc.todosapp.data.models.Priority
 import com.rodrigoc.todosapp.ui.theme.*
+import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
+import com.rodrigoc.todosapp.util.SearchAppBarState
+import com.rodrigoc.todosapp.util.TrailingIconState
 
 @Composable
-fun ListAppBar() {
-    DefaultAppBar(
-        onSearchClicked = {},
-        onSortClicked = {},
-        onDeleteAllClicked = {}
-    )
+fun ListAppBar(
+    sharedViewModel: SharedViewModel,
+    searchAppBarState: SearchAppBarState,
+    searchTextState: String,
+) {
+    when (searchAppBarState) {
+        SearchAppBarState.CLOSED -> {
+            DefaultAppBar(
+                onSearchClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
+                },
+                onSortClicked = {},
+                onDeleteAllClicked = {}
+            )
+        }
+        else -> {
+            SearchAppBar(
+                text = searchTextState,
+                textFieldState = { newText ->
+                    sharedViewModel.searchTextState.value = newText
+                },
+                onCloseClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
+                    sharedViewModel.searchTextState.value = ""
+                },
+                onSearchClicked = {
+                },
+            )
+        }
+    }
+
 }
 
 @Composable
@@ -171,9 +199,12 @@ fun DeleteAllAction(
 fun SearchAppBar(
     text: String,
     textFieldState: (String) -> Unit,
-    onSearchClicked: (String) -> Unit,
     onCloseClicked: () -> Unit,
+    onSearchClicked: (String) -> Unit,
 ) {
+
+    val trailingIconState by remember { mutableStateOf(TrailingIconState.READY_TO_DELETE) }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -213,7 +244,24 @@ fun SearchAppBar(
             },
             trailingIcon = {
                 IconButton(
-                    onClick = { onCloseClicked() }
+                    onClick = {
+                        when (trailingIconState) {
+                            TrailingIconState.READY_TO_DELETE -> {
+                                textFieldState("")
+                                TrailingIconState.READY_TO_CLOSE
+                            }
+                            else -> {
+                                if (text.isNotEmpty()) {
+                                    textFieldState("")
+                                    TrailingIconState.READY_TO_CLOSE
+                                } else {
+                                    onCloseClicked()
+                                    TrailingIconState.READY_TO_DELETE
+                                }
+                            }
+                        }
+                        onCloseClicked()
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Close,
@@ -254,10 +302,5 @@ private fun DefaultListAppBarPreview() {
 @Composable
 @Preview
 private fun SearchAppBarPreview() {
-    SearchAppBar(
-        text = "Search",
-        textFieldState = { },
-        onSearchClicked = { /*TODO*/ },
-        onCloseClicked = { /*TODO*/ }
-    )
+
 }

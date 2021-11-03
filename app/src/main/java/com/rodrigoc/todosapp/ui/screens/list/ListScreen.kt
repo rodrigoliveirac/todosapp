@@ -8,24 +8,37 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rodrigoc.todosapp.R
 import com.rodrigoc.todosapp.ui.theme.fabBackgroundColor
 import com.rodrigoc.todosapp.ui.theme.iconFabColor
+import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
+import com.rodrigoc.todosapp.util.SearchAppBarState
 
 @Composable
 fun ListScreen(
     navigateToTaskScreen: (Int) -> Unit,
+    sharedViewModel: SharedViewModel,
 ) {
 
+    val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
+
+    val searchTextState: String by sharedViewModel.searchTextState
+
     Scaffold(
-        topBar = { ListAppBar() },
+        topBar = {
+            ListAppBar(
+                sharedViewModel = sharedViewModel,
+                searchAppBarState = searchAppBarState,
+                searchTextState = searchTextState
+            )
+        },
         content = {},
         floatingActionButton = {
             ListFab(onFabClicked = navigateToTaskScreen)
@@ -53,11 +66,4 @@ fun ListFab(
             tint = MaterialTheme.colors.iconFabColor
         )
     }
-}
-
-
-@Composable
-@Preview
-private fun ListScreenPreview() {
-    ListScreen(navigateToTaskScreen = {})
 }
