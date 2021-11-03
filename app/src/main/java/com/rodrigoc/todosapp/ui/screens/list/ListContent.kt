@@ -2,6 +2,8 @@ package com.rodrigoc.todosapp.ui.screens.list
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -18,9 +20,22 @@ import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.ui.theme.*
 import org.w3c.dom.Text
 
+@ExperimentalMaterialApi
 @Composable
-fun ListContent(){
-
+fun ListContent(
+    task: List<Task>,
+    navigateToTaskScreen: (taskId: Int) -> Unit,
+) {
+    LazyColumn {
+        items(task, key = { task ->
+            task.id
+        }) { taskItem ->
+            TaskItem(
+                task = taskItem,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        }
+    }
 }
 
 @ExperimentalMaterialApi
@@ -56,8 +71,8 @@ fun TaskItem(
 
                 Box(
                     modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                        .fillMaxWidth()
+                        .weight(1f),
                     contentAlignment = Alignment.TopEnd) {
                     Canvas(
                         modifier = Modifier
@@ -88,6 +103,6 @@ fun TaskItem(
 @Composable
 @Preview
 fun TaskItemPreview() {
-    TaskItem(task = Task(0,"Titleee", "some random tet", Priority.HIGH),
+    TaskItem(task = Task(0, "Titleee", "some random tet", Priority.HIGH),
         navigateToTaskScreen = {})
 }

@@ -1,13 +1,13 @@
 package com.rodrigoc.todosapp.ui.screens.list
 
+import android.util.Log
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,11 +21,18 @@ import com.rodrigoc.todosapp.ui.theme.iconFabColor
 import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
 import com.rodrigoc.todosapp.util.SearchAppBarState
 
+@ExperimentalMaterialApi
 @Composable
 fun ListScreen(
     navigateToTaskScreen: (Int) -> Unit,
     sharedViewModel: SharedViewModel,
 ) {
+
+    LaunchedEffect(key1 = true) {
+        sharedViewModel.allTasks
+    }
+
+    val allTasks by sharedViewModel.allTasks.collectAsState() // collectAsState will observe Flow from the composable function.
 
     val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
 
@@ -40,7 +47,10 @@ fun ListScreen(
             )
         },
         content = {
-            ListContent()
+            ListContent(
+                task = allTasks,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
         },
         floatingActionButton = {
             ListFab(onFabClicked = navigateToTaskScreen)

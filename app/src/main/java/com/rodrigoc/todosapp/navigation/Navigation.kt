@@ -1,5 +1,6 @@
 package com.rodrigoc.todosapp.navigation
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
@@ -12,6 +13,7 @@ import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
 import com.rodrigoc.todosapp.util.Constants.LIST_SCREEN
 
 @Composable
+@ExperimentalMaterialApi
 fun SetupNavigation(
     navController: NavHostController,
     sharedViewModel: SharedViewModel
