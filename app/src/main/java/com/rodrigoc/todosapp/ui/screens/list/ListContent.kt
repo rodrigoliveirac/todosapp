@@ -18,34 +18,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.rodrigoc.todosapp.data.models.Priority
 import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.ui.theme.*
-import org.w3c.dom.Text
+import com.rodrigoc.todosapp.util.RequestState
 
 @ExperimentalMaterialApi
 @Composable
 fun ListContent(
-    task: List<Task>,
+    tasks: RequestState<List<Task>>,
     navigateToTaskScreen: (taskId: Int) -> Unit,
 ) {
-    if (task.isEmpty()) {
-        DisplayAllTasks(
-            task = task,
-            navigateToTaskScreen = navigateToTaskScreen
-        )
-    } else {
-        EmptyContent()
+    if (tasks is RequestState.Success) {
+        if (tasks.data.isEmpty()) {
+            EmptyContent()
+        } else {
+            DisplayAllTasks(
+                tasks = tasks.data,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        }
     }
 }
 
 @ExperimentalMaterialApi
 @Composable
 fun DisplayAllTasks(
-    task: List<Task>,
+    tasks: List<Task>,
     navigateToTaskScreen: (taskId: Int) -> Unit,
 ) {
 
     LazyColumn {
-        items(task, key = { task ->
-            task.id
+        items(tasks, key = { tasks ->
+            tasks
         }) { taskItem ->
             TaskItem(
                 task = taskItem,

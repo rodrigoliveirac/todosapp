@@ -1,6 +1,5 @@
 package com.rodrigoc.todosapp.ui.screens.list
 
-import android.util.Log
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,9 +15,11 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.rodrigoc.todosapp.R
+import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.ui.theme.fabBackgroundColor
 import com.rodrigoc.todosapp.ui.theme.iconFabColor
 import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
+import com.rodrigoc.todosapp.util.RequestState
 import com.rodrigoc.todosapp.util.SearchAppBarState
 
 @ExperimentalMaterialApi
@@ -48,7 +49,7 @@ fun ListScreen(
         },
         content = {
             ListContent(
-                task = allTasks,
+                tasks = allTasks as RequestState.Success<List<Task>>,
                 navigateToTaskScreen = navigateToTaskScreen
             )
         },
