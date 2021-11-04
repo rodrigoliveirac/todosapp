@@ -12,14 +12,22 @@ import com.rodrigoc.todosapp.ui.theme.onTaskItem
 import com.rodrigoc.todosapp.ui.theme.taskItem
 import com.rodrigoc.todosapp.ui.theme.topAppBarBackgroundColor
 import com.rodrigoc.todosapp.ui.theme.topAppBarContentColor
+import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
 import com.rodrigoc.todosapp.util.Action
 
 @Composable
 fun TaskAppBar(
+    selectedTask: Task?,
     navigateToListScreen: (Action) -> Unit,
 ) {
-    NewTaskAppBar(navigateToListScreen = navigateToListScreen)
-    // ExistingTaskAppBar(selectedTask = , navigateToTaskScreen = )
+    if (selectedTask == null) {
+        NewTaskAppBar(navigateToListScreen = navigateToListScreen)
+    } else {
+        ExistingTaskAppBar(
+            selectedTask = selectedTask,
+            navigateToTaskScreen = navigateToListScreen
+        )
+    }
 }
 
 @Composable

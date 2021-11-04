@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rodrigoc.todosapp.data.TaskDao
 import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.data.repositories.TaskRepository
@@ -44,6 +45,17 @@ class SharedViewModel
             }
         } catch (e: Exception) {
             _allTasks.value = RequestState.Error(e)
+        }
+    }
+
+    private val _selectedTask: MutableStateFlow<Task?> = MutableStateFlow(null)
+    val selectedTask: StateFlow<Task?> = _selectedTask
+
+    fun selectedTask(taskId: Int) {
+        viewModelScope.launch {
+            repository.getTask(taskId = taskId).collect { task ->
+              _selectedTask.value = task
+            }
         }
     }
 }
