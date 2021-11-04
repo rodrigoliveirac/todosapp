@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rodrigoc.todosapp.data.TaskDao
+import com.rodrigoc.todosapp.data.models.Priority
 import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.data.repositories.TaskRepository
 import com.rodrigoc.todosapp.util.RequestState
@@ -23,6 +24,11 @@ class SharedViewModel
 @Inject constructor(
     private val repository: TaskRepository,
 ) : ViewModel() {
+
+    val id: MutableState<Int> = mutableStateOf(0)
+    val title: MutableState<String> = mutableStateOf("")
+    val description: MutableState<String> = mutableStateOf("")
+    val priority: MutableState<Priority> = mutableStateOf(Priority.LOW)
 
     private val _searchAppBarState: MutableState<SearchAppBarState> =
         mutableStateOf(SearchAppBarState.CLOSED)
@@ -54,8 +60,22 @@ class SharedViewModel
     fun selectedTask(taskId: Int) {
         viewModelScope.launch {
             repository.getTask(taskId = taskId).collect { task ->
-              _selectedTask.value = task
+                _selectedTask.value = task
             }
+        }
+    }
+
+    fun updateTask(selectedTask: Task?) {
+        if (selectedTask != null) {
+            id.value = selectedTask.id
+            title.value = selectedTask.title
+            description.value = selectedTask.description
+            priority.value = selectedTask.priority
+        } else {
+            id.value = 0
+            title.value = ""
+            description.value = ""
+            priority.value = Priority.LOW
         }
     }
 }

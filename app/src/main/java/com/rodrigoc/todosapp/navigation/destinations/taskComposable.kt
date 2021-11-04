@@ -1,8 +1,10 @@
 package com.rodrigoc.todosapp.navigation.destinations
 
 import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -13,6 +15,7 @@ import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
 import com.rodrigoc.todosapp.util.Action
 import com.rodrigoc.todosapp.util.Constants
 import com.rodrigoc.todosapp.util.Constants.TASK_ARGUMENT_KEY
+import kotlinx.coroutines.selects.select
 
 fun NavGraphBuilder.taskComposable(
     sharedViewModel: SharedViewModel,
@@ -31,9 +34,13 @@ fun NavGraphBuilder.taskComposable(
 
         val selectedTask by sharedViewModel.selectedTask.collectAsState()
 
+        LaunchedEffect(key1 = taskId) {
+            sharedViewModel.updateTask(selectedTask = selectedTask)
+        }
         TaskScreen(
             navigateToListScreen = navigateToListScreen,
-            selectedTask = selectedTask
+            selectedTask = selectedTask,
+            sharedViewModel = sharedViewModel
         )
     }
 }
