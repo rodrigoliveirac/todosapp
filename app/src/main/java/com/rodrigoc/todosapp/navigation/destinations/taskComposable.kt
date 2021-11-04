@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.rodrigoc.todosapp.ui.screens.task.TaskScreen
 import com.rodrigoc.todosapp.util.Action
 import com.rodrigoc.todosapp.util.Constants
 import com.rodrigoc.todosapp.util.Constants.TASK_ARGUMENT_KEY
@@ -21,5 +22,7 @@ fun NavGraphBuilder.taskComposable(
     ) { navBackStackEntry ->
         val taskId = navBackStackEntry.arguments!!.getInt(TASK_ARGUMENT_KEY)
         Log.d("TaskComposable", taskId.toString())
+
+        TaskScreen(navigateToListScreen = navigateToListScreen)
     }
 }
