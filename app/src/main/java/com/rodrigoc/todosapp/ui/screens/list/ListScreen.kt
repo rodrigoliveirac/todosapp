@@ -29,7 +29,7 @@ fun ListScreen(
 ) {
 
     LaunchedEffect(key1 = true) {
-        sharedViewModel.allTasks
+        sharedViewModel.getTasks()
     }
 
     val allTasks by sharedViewModel.allTasks.collectAsState() // collectAsState will observe Flow from the composable function.
