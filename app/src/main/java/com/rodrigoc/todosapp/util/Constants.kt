@@ -1,5 +1,7 @@
 package com.rodrigoc.todosapp.util
 
+import androidx.compose.ui.unit.dp
+
 object Constants {
 
     const val DATABASE_TABLE = "todo_table"
@@ -10,4 +12,5 @@ object Constants {
 
     const val LIST_ARGUMENT_KEY = "action"
     const val TASK_ARGUMENT_KEY = "taskId"
+
 }
