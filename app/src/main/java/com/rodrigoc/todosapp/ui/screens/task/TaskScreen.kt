@@ -2,6 +2,7 @@ package com.rodrigoc.todosapp.ui.screens.task
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import com.rodrigoc.todosapp.data.models.Priority
 import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
 import com.rodrigoc.todosapp.util.Action
@@ -17,8 +18,17 @@ fun TaskScreen(
             TaskAppBar(
                 selectedTask = selectedTask,
                 navigateToListScreen = navigateToListScreen,
-                )
+            )
         },
-        content = { }
+        content = {
+            TaskContent(
+                title = "",
+                onTitleChange = {},
+                description = "",
+                onDescriptionChange = {},
+                priority = Priority.NONE,
+                onPrioritySelected = {},
+            )
+        }
     )
 }
