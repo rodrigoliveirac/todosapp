@@ -49,7 +49,7 @@ fun ListScreen(
         },
         content = {
             ListContent(
-                tasks = allTasks as RequestState.Success<List<Task>>,
+                tasks = allTasks,
                 navigateToTaskScreen = navigateToTaskScreen
             )
         },
