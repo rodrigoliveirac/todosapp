@@ -12,8 +12,8 @@ import com.rodrigoc.todosapp.navigation.destinations.taskComposable
 import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
 import com.rodrigoc.todosapp.util.Constants.LIST_SCREEN
 
-@Composable
 @ExperimentalMaterialApi
+@Composable
 fun SetupNavigation(
     navController: NavHostController,
     sharedViewModel: SharedViewModel

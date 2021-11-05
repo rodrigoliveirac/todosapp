@@ -12,19 +12,17 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.rodrigoc.todosapp.R
-import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.ui.theme.fabBackgroundColor
 import com.rodrigoc.todosapp.ui.theme.iconFabColor
 import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
 import com.rodrigoc.todosapp.util.Action
-import com.rodrigoc.todosapp.util.RequestState
 import com.rodrigoc.todosapp.util.SearchAppBarState
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
 fun ListScreen(
-    navigateToTaskScreen: (Int) -> Unit,
+    navigateToTaskScreen: (taskId: Int) -> Unit,
     sharedViewModel: SharedViewModel,
 ) {
 
@@ -44,8 +42,8 @@ fun ListScreen(
 
     DisplaySnackBar(
         scaffoldState = scaffoldState,
-        handleDatabaseActions = { sharedViewModel.handleDatabaseActions(action = action)},
-        taskTile = sharedViewModel.title.value,
+        handleDatabaseActions = { sharedViewModel.handleDatabaseActions(action = action) },
+        taskTitle = sharedViewModel.title.value,
         action = action)
 
     Scaffold(
@@ -60,7 +58,7 @@ fun ListScreen(
         content = {
             ListContent(
                 tasks = allTasks,
-                navigateToTaskScreen = navigateToTaskScreen
+                navigateToTaskScreen = navigateToTaskScreen,
             )
         },
         floatingActionButton = {
@@ -95,7 +93,7 @@ fun ListFab(
 fun DisplaySnackBar(
     scaffoldState: ScaffoldState,
     handleDatabaseActions: () -> Unit,
-    taskTile: String,
+    taskTitle: String,
     action: Action,
 ) {
     handleDatabaseActions()
@@ -108,10 +106,9 @@ fun DisplaySnackBar(
                     scaffoldState
                         .snackbarHostState
                         .showSnackbar(
-                            message = "${action.name}: $taskTile",
+                            message = "${action.name}: $taskTitle",
                             actionLabel = "Ok"
                         )
-                snackBarResult
             }
         }
     }

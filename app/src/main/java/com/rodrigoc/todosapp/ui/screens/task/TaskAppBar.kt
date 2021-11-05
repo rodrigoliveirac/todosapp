@@ -12,7 +12,6 @@ import com.rodrigoc.todosapp.ui.theme.onTaskItem
 import com.rodrigoc.todosapp.ui.theme.taskItem
 import com.rodrigoc.todosapp.ui.theme.topAppBarBackgroundColor
 import com.rodrigoc.todosapp.ui.theme.topAppBarContentColor
-import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
 import com.rodrigoc.todosapp.util.Action
 
 @Composable
@@ -25,7 +24,7 @@ fun TaskAppBar(
     } else {
         ExistingTaskAppBar(
             selectedTask = selectedTask,
-            navigateToTaskScreen = navigateToListScreen
+            navigateToListScreen = navigateToListScreen
         )
     }
 }
@@ -40,7 +39,7 @@ fun NewTaskAppBar(
         },
         title = {
             Text(
-                text = "Add Task",
+                text = stringResource(R.string.add_task_title),
                 color = MaterialTheme.colors.topAppBarContentColor
             )
         },
@@ -54,15 +53,15 @@ fun NewTaskAppBar(
 @Composable
 fun ExistingTaskAppBar(
     selectedTask: Task,
-    navigateToTaskScreen: (Action) -> Unit,
+    navigateToListScreen: (Action) -> Unit,
 ) {
     TopAppBar(
         navigationIcon = {
-            CloseAction(onCloseClicked = navigateToTaskScreen)
+            CloseAction(onCloseClicked = navigateToListScreen)
         },
         title = {
             Text(
-                text = selectedTask.title,
+                text = selectedTask.title!!,
                 color = MaterialTheme.colors.onTaskItem,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -70,8 +69,8 @@ fun ExistingTaskAppBar(
         },
         backgroundColor = MaterialTheme.colors.taskItem,
         actions = {
-            DeleteAction(onDeleteClicked = navigateToTaskScreen)
-            UpdateAction(onUpdateClicked = navigateToTaskScreen)
+            DeleteAction(onDeleteClicked = navigateToListScreen)
+            UpdateAction(onUpdateClicked = navigateToListScreen)
         }
     )
 }
@@ -109,7 +108,7 @@ fun AddAction(
     }) {
         Icon(
             imageVector = Icons.Filled.Check,
-            contentDescription = "Add Task",
+            contentDescription = stringResource(R.string.add_task),
             tint = MaterialTheme.colors.topAppBarContentColor
         )
     }
