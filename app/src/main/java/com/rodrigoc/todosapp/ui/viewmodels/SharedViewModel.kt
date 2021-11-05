@@ -9,6 +9,7 @@ import com.rodrigoc.todosapp.data.TaskDao
 import com.rodrigoc.todosapp.data.models.Priority
 import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.data.repositories.TaskRepository
+import com.rodrigoc.todosapp.util.Constants.MAX_TITLE_LENGTH
 import com.rodrigoc.todosapp.util.RequestState
 import com.rodrigoc.todosapp.util.SearchAppBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -76,6 +77,12 @@ class SharedViewModel
             title.value = ""
             description.value = ""
             priority.value = Priority.LOW
+        }
+    }
+
+    fun updateTitle(newTitle: String) {
+        if (newTitle.length < MAX_TITLE_LENGTH) {
+            title.value = newTitle
         }
     }
 }
