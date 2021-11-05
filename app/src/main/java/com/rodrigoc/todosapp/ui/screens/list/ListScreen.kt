@@ -33,11 +33,15 @@ fun ListScreen(
         sharedViewModel.getTasks()
     }
 
+    val action by sharedViewModel.action
+
     val allTasks by sharedViewModel.allTasks.collectAsState() // collectAsState will observe Flow from the composable function.
 
     val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
 
     val searchTextState: String by sharedViewModel.searchTextState
+
+    sharedViewModel.handleDatabaseActions(action = action)
 
     Scaffold(
         topBar = {

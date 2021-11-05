@@ -23,7 +23,7 @@ fun NavGraphBuilder.taskComposable(
 ) {
     composable(
         route = Constants.TASK_SCREEN,
-        arguments = listOf(navArgument(Constants.TASK_ARGUMENT_KEY) {
+        arguments = listOf(navArgument(TASK_ARGUMENT_KEY) {
             type = NavType.IntType
         })
     ) { navBackStackEntry ->
