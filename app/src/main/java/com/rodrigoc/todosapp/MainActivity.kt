@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.android.material.snackbar.Snackbar
 import com.rodrigoc.todosapp.navigation.SetupNavigation
 import com.rodrigoc.todosapp.ui.theme.ToDosAppTheme
 import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
@@ -21,11 +22,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 @ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
-    
+
     private lateinit var navController: NavHostController
 
     private val sharedViewModel: SharedViewModel by viewModels()
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

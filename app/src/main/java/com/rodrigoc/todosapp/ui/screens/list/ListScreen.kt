@@ -4,10 +4,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -19,8 +16,10 @@ import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.ui.theme.fabBackgroundColor
 import com.rodrigoc.todosapp.ui.theme.iconFabColor
 import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
+import com.rodrigoc.todosapp.util.Action
 import com.rodrigoc.todosapp.util.RequestState
 import com.rodrigoc.todosapp.util.SearchAppBarState
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
@@ -41,9 +40,16 @@ fun ListScreen(
 
     val searchTextState: String by sharedViewModel.searchTextState
 
-    sharedViewModel.handleDatabaseActions(action = action)
+    val scaffoldState = rememberScaffoldState()
+
+    DisplaySnackBar(
+        scaffoldState = scaffoldState,
+        handleDatabaseActions = { sharedViewModel.handleDatabaseActions(action = action)},
+        taskTile = sharedViewModel.title.value,
+        action = action)
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             ListAppBar(
                 sharedViewModel = sharedViewModel,
@@ -82,5 +88,31 @@ fun ListFab(
             contentDescription = stringResource(R.string.add_fab),
             tint = MaterialTheme.colors.iconFabColor
         )
+    }
+}
+
+@Composable
+fun DisplaySnackBar(
+    scaffoldState: ScaffoldState,
+    handleDatabaseActions: () -> Unit,
+    taskTile: String,
+    action: Action,
+) {
+    handleDatabaseActions()
+
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(key1 = action) {
+        if (action != Action.NONE_ACTION) {
+            scope.launch {
+                val snackBarResult =
+                    scaffoldState
+                        .snackbarHostState
+                        .showSnackbar(
+                            message = "${action.name}: $taskTile",
+                            actionLabel = "Ok"
+                        )
+                snackBarResult
+            }
+        }
     }
 }
