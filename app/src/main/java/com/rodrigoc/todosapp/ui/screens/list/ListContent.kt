@@ -46,9 +46,11 @@ fun DisplayAllTasks(
 ) {
 
     LazyColumn {
-        items(tasks, key = { tasks ->
-            tasks
-        }) { taskItem ->
+        items(
+            items = tasks,
+            key = { tasks ->
+                tasks.id
+            }) { taskItem ->
             TaskItem(
                 task = taskItem,
                 navigateToTaskScreen = navigateToTaskScreen
@@ -70,7 +72,7 @@ fun TaskItem(
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
         onClick = {
-            navigateToTaskScreen(task.id)
+            navigateToTaskScreen(task.id!!)
         }
     ) {
         Column(
@@ -81,7 +83,7 @@ fun TaskItem(
             Row {
                 Text(
                     modifier = Modifier.weight(8f),
-                    text = task.title,
+                    text = task.title!!,
                     color = MaterialTheme.colors.onTaskItem,
                     style = MaterialTheme.typography.h5,
                     fontWeight = FontWeight.Bold,
@@ -98,7 +100,7 @@ fun TaskItem(
                             .size(PRIORITY_INDICATOR_SIZE)
                     ) {
                         drawCircle(
-                            color = task.priority.color
+                            color = task.priority!!.color
                         )
                     }
                 }
@@ -106,7 +108,7 @@ fun TaskItem(
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = task.description,
+                text = task.description!!,
                 color = MaterialTheme.colors.onTaskItem,
                 style = MaterialTheme.typography.subtitle1,
                 maxLines = 2,
