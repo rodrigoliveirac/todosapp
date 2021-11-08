@@ -1,5 +1,6 @@
 package com.rodrigoc.todosapp.ui.viewmodels
 
+import androidx.compose.animation.core.animateDecay
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -108,6 +109,17 @@ class SharedViewModel
 
     }
 
+    private fun updateTask() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val task = Task(
+                id = id.value,
+                title = title.value,
+                description = description.value,
+                priority = priority.value
+            )
+            repository.updateTask(task = task)
+        }
+    }
     fun handleDatabaseActions(action: Action) {
         when (action) {
             Action.ADD -> {
@@ -117,7 +129,7 @@ class SharedViewModel
 
             }
             Action.UPDATE -> {
-
+                 updateTask()
             }
             Action.DELETE_ALL -> {
 
