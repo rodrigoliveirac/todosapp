@@ -30,7 +30,9 @@ fun NavGraphBuilder.taskComposable(
         val selectedTask by sharedViewModel.selectedTask.collectAsState()
 
         LaunchedEffect(key1 = selectedTask) {  //sometimes this operation runs first than collectAsState() which its could be a problem such as update the information, so to make sure if the task is already update on collectAsState, we need to pass the 'selectedTask' as a key instead of 'taskId'
-            sharedViewModel.updateTask(selectedTask = selectedTask)
+            if (selectedTask != null || taskId == -1) {
+                sharedViewModel.updateTask(selectedTask = selectedTask)
+            }
         }
         TaskScreen(
             selectedTask = selectedTask,

@@ -120,13 +120,26 @@ class SharedViewModel
             repository.updateTask(task = task)
         }
     }
+
+    private fun deleteTask() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val task = Task(
+                id = id.value,
+                title = title.value,
+                description = description.value,
+                priority = priority.value
+            )
+            repository.removeTask(task)
+        }
+    }
+
     fun handleDatabaseActions(action: Action) {
         when (action) {
             Action.ADD -> {
                 addTask()
             }
             Action.DELETE -> {
-
+                  deleteTask()
             }
             Action.UPDATE -> {
                  updateTask()
@@ -135,7 +148,7 @@ class SharedViewModel
 
             }
             Action.UNDO -> {
-
+                addTask()
             }
             else -> {
 
