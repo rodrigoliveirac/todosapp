@@ -202,7 +202,7 @@ fun SearchAppBar(
     onSearchClicked: (String) -> Unit,
 ) {
 
-    val trailingIconState by remember { mutableStateOf(TrailingIconState.READY_TO_DELETE) }
+    var trailingIconState by remember { mutableStateOf(TrailingIconState.READY_TO_DELETE) }
 
     Surface(
         modifier = Modifier
@@ -247,19 +247,17 @@ fun SearchAppBar(
                         when (trailingIconState) {
                             TrailingIconState.READY_TO_DELETE -> {
                                 textFieldState("")
-                                TrailingIconState.READY_TO_CLOSE
+                                trailingIconState = TrailingIconState.READY_TO_CLOSE
                             }
                             else -> {
                                 if (text.isNotEmpty()) {
                                     textFieldState("")
-                                    TrailingIconState.READY_TO_CLOSE
                                 } else {
                                     onCloseClicked()
                                     TrailingIconState.READY_TO_DELETE
                                 }
                             }
                         }
-                        onCloseClicked()
                     }
                 ) {
                     Icon(
