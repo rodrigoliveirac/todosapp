@@ -3,10 +3,11 @@ package com.rodrigoc.todosapp.ui.screens.task
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.rodrigoc.todosapp.R
+import com.rodrigoc.todosapp.components.DisplayAlertDialog
 import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.ui.theme.onTaskItem
 import com.rodrigoc.todosapp.ui.theme.taskItem
@@ -69,10 +70,33 @@ fun ExistingTaskAppBar(
         },
         backgroundColor = MaterialTheme.colors.taskItem,
         actions = {
-            DeleteAction(onDeleteClicked = navigateToListScreen)
-            UpdateAction(onUpdateClicked = navigateToListScreen)
+            ExistingTaskAppBarAction(
+                selectedTask = selectedTask,
+                navigateToListScreen = navigateToListScreen
+            )
         }
     )
+}
+
+@Composable
+fun ExistingTaskAppBarAction(
+    selectedTask: Task,
+    navigateToListScreen: (Action) -> Unit,
+) {
+    var openDialog by remember { mutableStateOf(false) }
+
+    DisplayAlertDialog(
+        title = stringResource(id = R.string.delete_task, selectedTask.title),
+        message = stringResource(id = R.string.delete_task_confirmation, selectedTask.title),
+        openDialog = openDialog,
+        closeDialog = { openDialog = false },
+        onYesClicked = { navigateToListScreen(Action.DELETE) }
+    )
+    DeleteAction(onDeleteClicked = {
+        openDialog = true
+    })
+    UpdateAction(onUpdateClicked = navigateToListScreen)
+
 }
 
 @Composable
@@ -116,9 +140,9 @@ fun AddAction(
 
 @Composable
 fun DeleteAction(
-    onDeleteClicked: (Action) -> Unit,
+    onDeleteClicked: () -> Unit,
 ) {
-    IconButton(onClick = { onDeleteClicked(Action.DELETE) }) {
+    IconButton(onClick = { onDeleteClicked() }) {
         Icon(
             imageVector = Icons.Filled.Delete,
             contentDescription = stringResource(R.string.delete_icon),
