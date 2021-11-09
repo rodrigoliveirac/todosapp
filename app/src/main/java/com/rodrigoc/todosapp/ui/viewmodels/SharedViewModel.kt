@@ -152,6 +152,11 @@ class SharedViewModel
         }
     }
 
+    private fun deleteAllTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllTasks()
+        }
+    }
     fun handleDatabaseActions(action: Action) {
         when (action) {
             Action.ADD -> {
@@ -164,7 +169,7 @@ class SharedViewModel
                 updateTask()
             }
             Action.DELETE_ALL -> {
-
+                 deleteAllTasks()
             }
             Action.UNDO -> {
                 addTask()

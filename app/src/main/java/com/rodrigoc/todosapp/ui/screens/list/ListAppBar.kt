@@ -23,6 +23,7 @@ import com.rodrigoc.todosapp.components.PriorityItem
 import com.rodrigoc.todosapp.data.models.Priority
 import com.rodrigoc.todosapp.ui.theme.*
 import com.rodrigoc.todosapp.ui.viewmodels.SharedViewModel
+import com.rodrigoc.todosapp.util.Action
 import com.rodrigoc.todosapp.util.SearchAppBarState
 import com.rodrigoc.todosapp.util.TrailingIconState
 
@@ -39,7 +40,9 @@ fun ListAppBar(
                     sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
                 },
                 onSortClicked = {},
-                onDeleteAllClicked = {}
+                onDeleteAllClicked = {
+                    sharedViewModel.action.value = Action.DELETE_ALL
+                }
             )
         }
         else -> {
