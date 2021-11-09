@@ -45,8 +45,27 @@ class SharedViewModel
         mutableStateOf("")
     val searchTextState: MutableState<String> = _searchTextState
 
+    private val _searchedTasks = MutableStateFlow<RequestState<List<Task>>>(RequestState.Idle)
+    val searchedTasks: StateFlow<RequestState<List<Task>>> = _searchedTasks
+
     private val _allTasks = MutableStateFlow<RequestState<List<Task>>>(RequestState.Idle)
     val allTasks: StateFlow<RequestState<List<Task>>> = _allTasks
+
+    fun searchDatabase(searchQuery: String) {
+        _searchedTasks.value = RequestState.Loading
+        try {
+            viewModelScope.launch {
+                repository
+                    .searchDatabase(searchQuery = "%$searchQuery%")
+                    .collect { searchedTasks ->
+                        _searchedTasks.value = RequestState.Success(searchedTasks)
+                    }
+            }
+        } catch (e: Exception) {
+            _searchedTasks.value = RequestState.Error(e)
+        }
+        searchAppBarState.value = SearchAppBarState.TRIGGERED
+    }
 
     fun getTasks() {
         _allTasks.value = RequestState.Loading
@@ -106,7 +125,7 @@ class SharedViewModel
             )
             repository.insertTask(task = task)
         }
-
+        searchAppBarState.value = SearchAppBarState.CLOSED
     }
 
     private fun updateTask() {
@@ -139,10 +158,10 @@ class SharedViewModel
                 addTask()
             }
             Action.DELETE -> {
-                  deleteTask()
+                deleteTask()
             }
             Action.UPDATE -> {
-                 updateTask()
+                updateTask()
             }
             Action.DELETE_ALL -> {
 

@@ -19,23 +19,47 @@ import com.rodrigoc.todosapp.data.models.Priority
 import com.rodrigoc.todosapp.data.models.Task
 import com.rodrigoc.todosapp.ui.theme.*
 import com.rodrigoc.todosapp.util.RequestState
+import com.rodrigoc.todosapp.util.SearchAppBarState
 
 @ExperimentalMaterialApi
 @Composable
 fun ListContent(
-    tasks: RequestState<List<Task>>,
+    allTasks: RequestState<List<Task>>,
+    searchedTasks: RequestState<List<Task>>,
+    searchAppBarState: SearchAppBarState,
     navigateToTaskScreen: (taskId: Int) -> Unit,
 ) {
-    if (tasks is RequestState.Success) {
-        if (tasks.data.isEmpty()) {
-            EmptyContent()
-        } else {
-            DisplayAllTasks(
-                tasks = tasks.data,
+    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
+        if (searchedTasks is RequestState.Success) {
+            HandleListContent(
+                tasks = searchedTasks.data,
                 navigateToTaskScreen = navigateToTaskScreen
             )
         }
+    } else {
+        if (allTasks is RequestState.Success) {
+            HandleListContent(
+                tasks = allTasks.data,
+                navigateToTaskScreen = navigateToTaskScreen)
+        }
     }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun HandleListContent(
+    tasks: List<Task>,
+    navigateToTaskScreen: (taskId: Int) -> Unit,
+) {
+    if (tasks.isEmpty()) {
+        EmptyContent()
+    } else {
+        DisplayAllTasks(
+            tasks = tasks,
+            navigateToTaskScreen = navigateToTaskScreen,
+        )
+    }
+
 }
 
 @ExperimentalMaterialApi
@@ -72,7 +96,7 @@ fun TaskItem(
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
         onClick = {
-            navigateToTaskScreen(task.id!!)
+            navigateToTaskScreen(task.id)
         }
     ) {
         Column(
@@ -83,7 +107,7 @@ fun TaskItem(
             Row {
                 Text(
                     modifier = Modifier.weight(8f),
-                    text = task.title!!,
+                    text = task.title,
                     color = MaterialTheme.colors.onTaskItem,
                     style = MaterialTheme.typography.h5,
                     fontWeight = FontWeight.Bold,
@@ -100,7 +124,7 @@ fun TaskItem(
                             .size(PRIORITY_INDICATOR_SIZE)
                     ) {
                         drawCircle(
-                            color = task.priority!!.color
+                            color = task.priority.color
                         )
                     }
                 }
@@ -108,7 +132,7 @@ fun TaskItem(
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = task.description!!,
+                text = task.description,
                 color = MaterialTheme.colors.onTaskItem,
                 style = MaterialTheme.typography.subtitle1,
                 maxLines = 2,

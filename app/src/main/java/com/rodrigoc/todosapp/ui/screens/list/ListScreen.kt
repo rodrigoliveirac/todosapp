@@ -34,6 +34,8 @@ fun ListScreen(
 
     val allTasks by sharedViewModel.allTasks.collectAsState() // collectAsState will observe Flow from the composable function.
 
+    val searchedTasks by sharedViewModel.searchedTasks.collectAsState()
+
     val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
 
     val searchTextState: String by sharedViewModel.searchTextState
@@ -58,7 +60,9 @@ fun ListScreen(
         },
         content = {
             ListContent(
-                tasks = allTasks,
+                allTasks = allTasks,
+                searchedTasks = searchedTasks,
+                searchAppBarState = searchAppBarState,
                 navigateToTaskScreen = navigateToTaskScreen,
             )
         },
