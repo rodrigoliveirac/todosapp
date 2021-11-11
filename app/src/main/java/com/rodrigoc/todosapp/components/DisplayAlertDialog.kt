@@ -32,7 +32,7 @@ fun DisplayAlertDialog(
                 )
             },
             confirmButton = {
-                OutlinedButton(
+                Button(
                     onClick = {
                         onYesClicked()
                         closeDialog()
@@ -41,7 +41,7 @@ fun DisplayAlertDialog(
                 }
             },
             dismissButton = {
-                Button(
+                OutlinedButton(
                     onClick = { closeDialog() }
                 ) {
                     Text(text = stringResource(R.string.no))
